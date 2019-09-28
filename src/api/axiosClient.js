@@ -1,5 +1,10 @@
 import axios from "axios";
 
+//var axiosInstance = axios.create({
+//    baseURL: 'http://172.20.0.2:4000',
+//    /* other custom settings */
+//});
+
 // Add a response interceptor
 axios.interceptors.response.use(
   response => response,

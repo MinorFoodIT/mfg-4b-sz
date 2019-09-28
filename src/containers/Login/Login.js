@@ -82,7 +82,7 @@ const Login = (props) => {
                 console.groupEnd();
             }
         }).catch((error)=>{
-            console.log('API error ,could not sign in')
+            console.log('API error ,could not sign in' + error)
         })
         console.groupEnd();
         

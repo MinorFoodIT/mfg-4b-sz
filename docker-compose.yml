@@ -1,0 +1,84 @@
+version: '3.5'
+
+services:
+  mfg-4b-sz-server:
+    image: mfg-4b-sz-server:v1
+    container_name: 'mfg-4b-sz-server'
+    expose:
+      - '4000'
+    ports:
+      - '4000:4000'
+    restart: 'always' #on-failure
+  mfg-4b-sz:
+    image: mfg-4b-sz:v1
+    container_name: 'mfg-4b-sz'
+    expose: # accessible to linked services
+      - '3000'  #${APP_SERVER_PORT}
+    ports:
+      - '80:3000' #${APP_SERVER_PORT}:${APP_SERVER_PORT}
+    links:
+      - 'mfg-4b-sz-server'
+    restart: 'always'
+#services:
+#  mfg-4b-sz:
+    #build:
+    #  context: .
+    #  labels:
+    #    - "com.minor.description=Sizzler webapp"
+    #    - "com.minor.department=FoodIT"
+    #  target: prod
+    #deploy:
+    #  mode: replicated = * / global=1
+    #  replicas: 1
+    #  endpoint_mode: dnsrr
+    #  labels:
+    #        com.example.description: "This label will appear on the web service"
+    #  placement:
+    #    constraints:
+    #      - node.role == manager
+    #      - engine.labels.operatingsystem == ubuntu 14.04
+    #    preferences:
+    #      - spread: node.labels.zone
+    #  resources:
+    #    limits:
+    #      cpus: '0.50'
+    #      memory: 50M
+    #    reservations:
+    #      cpus: '0.25'
+    #      memory: 20M
+    #  restart_policy: #Out of memory exception
+    #    condition: on-failure
+    #    delay: 5s
+    #    max_attempts: 3
+    #    window: 120s
+    #logging:
+    #  driver: "json-file"
+    #  options:
+    #    max-size: "200k"
+    #    max-file: "10"
+    #network_mode: "bridge"
+    #networks:
+    #  - some-network
+    #  - other-network
+    #port:port #HOST:CONTAINER
+#devices:
+#  - "/dev/ttyUSB0:/dev/ttyUSB0"
+#dns: 8.8.8.8
+#entrypoint:
+#  - /code/entrypoint.sh
+#env_file:
+#  - ./common.env
+#  - ./apps/web.env
+#environment:
+#  - RACK_ENV=development
+#  - SHOW=true
+#  - SESSION_SECRET
+#extra_hosts:
+#  - "somehost:162.242.195.82"
+#  - "otherhost:50.31.209.229"
+#healthcheck:
+#  test: ["CMD", "curl", "-f", "http://localhost"]
+#  interval: 1m30s
+#  timeout: 10s
+#  retries: 3
+#  start_period: 40s

@@ -1,24 +1,70 @@
-version: '3.5'
+version: '3.7'
 
 services:
-  mfg-4b-sz-server:
-    image: mfg-4b-sz-server:v1
-    container_name: 'mfg-4b-sz-server'
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      args:
+        DB_HOST: db
+    container_name: 'mfg-4b-sz_server'
+    restart: 'always' #on-failure
+    depends_on:
+      - db
     expose:
       - '4000'
     ports:
       - '4000:4000'
-    restart: 'always' #on-failure
-  mfg-4b-sz:
-    image: mfg-4b-sz:v1
-    container_name: 'mfg-4b-sz'
-    expose: # accessible to linked services
-      - '3000'  #${APP_SERVER_PORT}
-    ports:
-      - '80:3000' #${APP_SERVER_PORT}:${APP_SERVER_PORT}
-    links:
-      - 'mfg-4b-sz-server'
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - stack1_backend
+      - stack1_frontend
+
+  web:
+    #image: mfg-4b-sz:v1
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_HOST: '192.168.1.39'
+        #REACT_APP_API_BASE_URL: 'http://:4000'
+    #extra_hosts:
+    #  - 'outside:${HOST_IP}'
+    container_name: 'mfg-4b-sz_web'
     restart: 'always'
+    depends_on:
+      - server
+    expose: # accessible to linked services
+      - '80'  #${APP_SERVER_PORT}
+    ports:
+      - '80:80' #${APP_SERVER_PORT}:${APP_SERVER_PORT}
+    networks:
+      - stack1_frontend
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'storeasservice'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'minor@1234'
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - /Users/Macbook/stack/stack1_sz/db/data:/var/lib/mysql
+    networks:
+      - stack1_backend
+  admin:
+    image: adminer
+    ports:
+      - '8080:8080'
+    networks:
+      - stack1_backend
+# Networks to be created to facilitate communication between containers
+networks:
+  stack1_backend:
+  stack1_frontend:
+
 #services:
 #  mfg-4b-sz:
     #build:

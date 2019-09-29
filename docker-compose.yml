@@ -13,8 +13,8 @@ services:
       - db
     expose:
       - '4000'
-    ports:
-      - '4000:4000'
+    #ports:
+    #  - '4000:4000'
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - stack1_backend
       - stack1_frontend
@@ -25,7 +25,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
       args:
-        REACT_APP_API_HOST: '192.168.1.39'
+        REACT_APP_API_HOST: '127.0.0.1'
         #REACT_APP_API_BASE_URL: 'http://:4000'
     #extra_hosts:
     #  - 'outside:${HOST_IP}'
@@ -39,11 +39,12 @@ services:
       - '80:80' #${APP_SERVER_PORT}:${APP_SERVER_PORT}
     networks:
       - stack1_frontend
-
+    links:
+      - server
   db:
     image: mysql:5.7
-    ports:
-      - "3306:3306"
+    #ports:
+    #  - "3306:3306"
     restart: always
     environment:
       MYSQL_DATABASE: 'storeasservice'
@@ -57,7 +58,8 @@ services:
   admin:
     image: adminer
     ports:
-      - '8080:8080'
+      - '8090:8080'
+    restart: always
     networks:
       - stack1_backend
 # Networks to be created to facilitate communication between containers

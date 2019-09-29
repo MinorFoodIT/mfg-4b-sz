@@ -89,6 +89,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "http://server:4000",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",

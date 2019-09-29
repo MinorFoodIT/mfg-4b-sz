@@ -1,12 +1,12 @@
 import axios from "axios";
 
-var axiosInstance = axios.create({
-    baseURL: 'http://'+process.env.REACT_APP_API_HOST+':4000' || 'http://localhost:4000', // 'http://172.20.0.2:4000',
-    /* other custom settings */
-});
+//var axiosInstance = axios.create({
+//    baseURL: 'http://'+process.env.REACT_APP_API_HOST+':4000' || 'http://localhost:4000', // 'http://172.20.0.2:4000',
+//    /* other custom settings */
+//});
 
 // Add a response interceptor
-axiosInstance.interceptors.response.use(
+axios.interceptors.response.use(
   response => response,
   error => {
     if (error.response) {
@@ -20,4 +20,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export default axios;

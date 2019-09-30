@@ -82,7 +82,7 @@ router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
         console.log("Incoming request from store");
         var jsonrequest = req.body;
         var site = req.params.brand.toUpperCase();
-        console.log('Request incomming ');
+        //console.log('Request incomming ');
         console.log(jsonrequest);
         if(jsonrequest.hasOwnProperty('SDM')) {
             var orderStatus = jsonrequest.SDM.Status;
@@ -96,8 +96,9 @@ router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
             var orderName = jsonrequest.SDM.OrderName;
 
             //Date value in MS access file
-            var tranDate =  moment(jsonrequest.SDM.DateOfTrans, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DateOfTrans)?jsonrequest.SDM.DateOfTrans:'undefined','YYYYY-MM-DDTHH:mm:ss'); //"DateOfTrans": "0001-01-01T00:00:00",
-            var dueDate  = moment(jsonrequest.SDM.DueTime, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DueTime)?jsonrequest.SDM.DueTime:'undefined','YYYY-MM-DDTHH:mm:ss');
+            console.log(jsonrequest.SDM.DateOfTrans);
+            var tranDate =  moment(jsonrequest.SDM.DateOfTrans, 'YYYY-MM-DDTHH:mm:ss'); //.format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DateOfTrans)?jsonrequest.SDM.DateOfTrans:'undefined','YYYYY-MM-DDTHH:mm:ss'); //"DateOfTrans": "0001-01-01T00:00:00",
+            var dueDate  = moment(jsonrequest.SDM.DueTime, 'YYYY-MM-DDTHH:mm:ss'); //.format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DueTime)?jsonrequest.SDM.DueTime:'undefined','YYYY-MM-DDTHH:mm:ss');
             console.log(tranDate);
             console.log(dueDate);
 

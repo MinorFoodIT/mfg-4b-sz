@@ -45,6 +45,7 @@ services:
     image: mysql:5.7
     #ports:
     #  - "3306:3306"
+    container_name: 'mfg-4b-sz_db'
     restart: always
     environment:
       MYSQL_DATABASE: 'storeasservice'
@@ -59,6 +60,7 @@ services:
     image: adminer
     ports:
       - '8090:8080'
+    container_name: 'mfg-4b-sz_admin'
     restart: always
     networks:
       - stack1_backend

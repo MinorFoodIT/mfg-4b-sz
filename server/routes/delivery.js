@@ -60,13 +60,13 @@ router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res
 router.post('/v1/login', function(req, res, next) {
     var username = req.body.username
     var password = req.body.password
-    console.log('Request incomming ');
-    console.log('login with '+username);
+    //console.log('Request incomming ');
+    //console.log('login with '+username);
     mysqldb((err,connection) => {
         if(err){
             console.error('mysqldb :'+err);
         }
-        console.log(connection);
+        //console.log(connection);
         connection.query('SELECT * from users where username = ? and password = ? and active=1', [username,password], function (error, results, fields) {
             if(error) throw error;
             res.send(JSON.stringify(results));
@@ -83,7 +83,7 @@ router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
         var jsonrequest = req.body;
         var site = req.params.brand.toUpperCase();
         console.log('Request incomming ');
-        //console.log(jsonrequest);
+        console.log(jsonrequest);
         if(jsonrequest.hasOwnProperty('SDM')) {
             var orderStatus = jsonrequest.SDM.Status;
             var orderType = jsonrequest.SDM.OrderType;
@@ -96,8 +96,8 @@ router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
             var orderName = jsonrequest.SDM.OrderName;
 
             //Date value in MS access file
-            var tranDate =  moment(jsonrequest.SDM.DateOfTrans, 'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DateOfTrans)?jsonrequest.SDM.DateOfTrans:'undefined','YYYYY-MM-DDTHH:mm:ss'); //"DateOfTrans": "0001-01-01T00:00:00",
-            var dueDate  = moment(jsonrequest.SDM.DueTime, 'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DueTime)?jsonrequest.SDM.DueTime:'undefined','YYYY-MM-DDTHH:mm:ss');
+            var tranDate =  moment(jsonrequest.SDM.DateOfTrans, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DateOfTrans)?jsonrequest.SDM.DateOfTrans:'undefined','YYYYY-MM-DDTHH:mm:ss'); //"DateOfTrans": "0001-01-01T00:00:00",
+            var dueDate  = moment(jsonrequest.SDM.DueTime, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DueTime)?jsonrequest.SDM.DueTime:'undefined','YYYY-MM-DDTHH:mm:ss');
             console.log(tranDate);
             console.log(dueDate);
 

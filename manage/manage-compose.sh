@@ -21,16 +21,16 @@ start() {
 
 db-table-setup() {
     echo "create tables"
-    cat db/create-tables.sql | docker exec -i mfg-4b-sz_db_1 /usr/bin/mysql -u root --password=root storeasservice
+    cat db/create-tables.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice
 
     echo "setup sites"
-    cat db/sites.sql | docker exec -i mfg-4b-sz_db_1 /usr/bin/mysql -u root --password=root storeasservice
+    cat db/sites.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice
 
     echo "setup process_configuration"
-    cat db/process_configuration.sql | docker exec -i mfg-4b-sz_db_1 /usr/bin/mysql -u root --password=root storeasservice
+    cat db/process_configuration.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice
 
     echo "setup status_configuration"
-    cat db/status_configuration.sql | docker exec -i mfg-4b-sz_db_1 /usr/bin/mysql -u root --password=root storeasservice
+    cat db/status_configuration.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice
 
 }
 
@@ -41,12 +41,12 @@ db-backup() {
 
 db-restore() {
     # Backup
-    cat backup.sql | docker exec -i mfg-4b-sz_db_1 /usr/bin/mysql -u root --password=root storeasservice
+    cat backup.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice
 }
 
 db-insert-user() {
     echo "insert user"
-    cat user/user.sql | docker exec -i mfg-4b-sz_db_1 /usr/bin/mysql -u root --password=root storeasservice
+    cat user/user.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice
 }
 
 case "$1" in

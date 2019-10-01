@@ -97,8 +97,8 @@ router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
 
             //Date value in MS access file
             console.log(jsonrequest.SDM.DateOfTrans);
-            var tranDate =  moment(jsonrequest.SDM.DateOfTrans, 'YYYY-MM-DDTHH:mm:ss'); //.format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DateOfTrans)?jsonrequest.SDM.DateOfTrans:'undefined','YYYYY-MM-DDTHH:mm:ss'); //"DateOfTrans": "0001-01-01T00:00:00",
-            var dueDate  = moment(jsonrequest.SDM.DueTime, 'YYYY-MM-DDTHH:mm:ss'); //.format('DD/MM/YYYY HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DueTime)?jsonrequest.SDM.DueTime:'undefined','YYYY-MM-DDTHH:mm:ss');
+            var tranDate =  moment(jsonrequest.SDM.DateOfTrans, 'YYYY-MM-DDTHH:mm:ss').format('YYYY-MM-DD HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DateOfTrans)?jsonrequest.SDM.DateOfTrans:'undefined','YYYYY-MM-DDTHH:mm:ss'); //"DateOfTrans": "0001-01-01T00:00:00",
+            var dueDate  = moment(jsonrequest.SDM.DueTime, 'YYYY-MM-DDTHH:mm:ss').format('YYYY-MM-DD HH:mm:ss'); //moment(!isUndefined(jsonrequest.SDM.DueTime)?jsonrequest.SDM.DueTime:'undefined','YYYY-MM-DDTHH:mm:ss');
             console.log(tranDate);
             console.log(dueDate);
 

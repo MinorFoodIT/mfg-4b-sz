@@ -13,8 +13,8 @@ services:
       - db
     expose:
       - '4000'
-    #ports:
-    #  - '4000:4000'
+    ports:
+      - '4000:4000'
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - stack1_backend
       - stack1_frontend

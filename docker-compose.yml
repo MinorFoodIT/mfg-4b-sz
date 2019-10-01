@@ -53,7 +53,8 @@ services:
       MYSQL_PASSWORD: 'minor@1234'
       MYSQL_ROOT_PASSWORD: 'root'
     volumes:
-      - /Users/Macbook/stack/stack1_sz/db/data:/var/lib/mysql
+      #- /Users/Macbook/stack/stack1_sz/db/data:/var/lib/mysql
+      - /home/minor/stack/volume/stack1_sz/db/data:/var/lib/mysql
     networks:
       - stack1_backend
   admin:

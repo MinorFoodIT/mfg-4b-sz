@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import { Link ,withRouter} from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 import SummaryTransaction from '../../components/Report/SummaryTransaction'
+import SummaryMonthlyTransaction from "../../components/Report/SummaryMonthlyTransaction";
 
 const drawerWidth = 240;
 //Inline styles
@@ -202,7 +203,7 @@ const LayoutManager = (props) => {
       <main className={classes.content}>
         <SwipeableViews axis={'x'} index={value} onChangeIndex={handleChangeIndex}>
           <TabContainer dir={'ltr'}><SummaryTransaction></SummaryTransaction></TabContainer>
-          <TabContainer dir={'ltr'}>Page2</TabContainer>
+          <TabContainer dir={'ltr'}><SummaryMonthlyTransaction></SummaryMonthlyTransaction></TabContainer>
         </SwipeableViews>
       </main>
     </div>

@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import axios from '../../api/axiosClient';
 import {useStateValue} from '../../global/state'
-import SearchPanel from "./SearchPanel";
+import SearchPanelWithoutSites from "./SearchPanelWithoutSites";
 
 
 const useStyles = makeStyles(theme => ({
@@ -50,78 +50,53 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const SummaryTransaction = (props) => {
+const SummaryMonthlyTransaction = (props) => {
     const classes = useStyles();
     const columnMetaData = [
-        {
-            title: 'Store ID',
-            field: 'store ID',
-        },
         {
             title: 'Store Name',
             field: 'siteName',
         },
-        {
-            title: 'Status',
-            field: 'status',
-            cellStyle: {
-                textAlign: 'center',
-                padding: '1px 1px 1px 1px',
-            },
-            render: rowData => {  //props => {
-                if(rowData.status === 'Cooking' ){
-                    return (
-                        <div>
-                            <Chip label="Cooking" className={classes.chip_cooking}/>
-                        </div>
-                    );
-                }
-            },
-        },
-        {
-            title: 'Order ID',
-            field: 'orderName',
-        },
-        { title: 'Order Time' ,
-            field: 'orderTime',
-            type: 'datetime',
-            cellStyle: {
-                padding: '1px 1px 1px 1px',
-            }
-        },
-        { title: 'Cooking Time' ,
-            field: 'cookingFinishTime',
-            type: 'datetime',
-            cellStyle: {
-                padding: '1px 1px 1px 1px',
-            }
-        },
-        { title: 'Pickup Time' ,
-            field: 'pickupFinishTime',
-            type: 'datetime',
-            cellStyle: {
-                padding: '1px 1px 1px 1px',
-            }
-        },
-        { title: 'Cooking time (mins)',
-            field: 'cookingTime',
+        { title: 'No. of delivery order' ,
+            field: 'totalOrder',
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
             }
         },
-        { title: 'Pickuped time (mins)',
-            field: 'pickupTime',
-            type: 'numeric',
-            cellStyle: {
-                padding: '1px 1px 1px 1px',
-            }
-        },
-        { title: 'Gross Total',
-            field: 'grossTotal',
+        { title: 'Total Sales',
+            field: 'totalSale',
             type: 'currency' ,
             currencySetting: {
                 currencyCode: 'THB'
+            }
+        },
+        { title: 'Average time to cook (mins)',
+            field: 'avgCooking',
+            type: 'numeric',
+            cellStyle: {
+                padding: '1px 1px 1px 1px',
+            }
+        },
+        { title: 'Average time to pickup (min)',
+            field: 'avgPickup',
+            type: 'numeric',
+            cellStyle: {
+                padding: '1px 1px 1px 1px',
+            }
+        },
+        { title: 'No. of order with cooking time > 15 mins',
+            field: 'aboveCooking',
+            type: 'numeric',
+            cellStyle: {
+                padding: '1px 1px 1px 1px',
+            }
+        },
+        { title: '% of order with cooking time > 15 mins',
+            field: 'aboveCookingPercent',
+            type: 'numeric',
+            cellStyle: {
+                padding: '1px 1px 1px 1px',
             }
         },
     ];
@@ -136,24 +111,14 @@ const SummaryTransaction = (props) => {
     const [rows, setRows] = React.useState([]);
 
     const [isLoading,setIsLoading] = React.useState(false);  //Data isloading when button has beenclicked
-    const [isLoaded,setIsLoaded] = React.useState(false);
-    const [sites, setSites] = React.useState([]);
-    const dataSites = useMemo( async () => {
-        let get_url = '/api/v1/sites'
-        const result = await axios.get(get_url)
-        //console.group('GET ' + get_url);
-        //console.log(result.data);
-        //console.groupEnd();
-        setSites(result.data);
-        return result.data;
-    },[]);
+
 
     useEffect(() => {
-        setIsLoaded(true);
+
     },[])
 
     const searchReport = useCallback( async(site,selectedStartDate,selectedEndDate) => {
-        let get_url = '/api/v1/report_transaction/'+selectedStartDate+'/'+selectedEndDate+'/'+site;
+        let get_url = '/api/v1/report_monthly_transaction/'+selectedStartDate+'/'+selectedEndDate;
         const result = await axios.get(get_url);
         console.group('API :');
         console.log(result.data);
@@ -164,7 +129,7 @@ const SummaryTransaction = (props) => {
 
     return (
             <MaterialTable
-                title={isLoaded?<SearchPanel listbox={sites} searchReport={searchReport}></SearchPanel> :<SearchPanel listbox={[]} searchReport={searchReport} ></SearchPanel>}
+                title={<SearchPanelWithoutSites  searchReport={searchReport} ></SearchPanelWithoutSites>}
                 isLoading={isLoading}
                 columns={state.columns}
                 data={[...rows]}
@@ -181,4 +146,4 @@ const SummaryTransaction = (props) => {
     );
 };
 
-export default SummaryTransaction;
+export default SummaryMonthlyTransaction;

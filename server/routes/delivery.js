@@ -35,8 +35,39 @@ router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res
     var enddate = req.params.enddate;
     enddate = enddate.substring(0,4)+'-'+enddate.substring(4,6)+'-'+enddate.substring(6,8);
     var site = req.params.site;
+    console.group('Report of transaction :');
+    console.log('Date : '+startdate +' to '+enddate);
+    console.groupEnd();
+    mysqldb((err,connection) => {
+        connection.query('SELECT ord.id ,ord.storeID,st.siteName,case when cancelTime > 0 then 0 else 1 end as status \n' +
+            ',ord.orderName,ord.tranDate,ord.cookingFinishTime,ord.pickupFinishTime \n' +
+            ',TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) as cookingTime,TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime) as pickupTime \n' +
+            ',ord.grossTotal\n' +
+            ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
+            ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
+            ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +
+            ' and ord.storeID = \''+site+'\' ',function (error, results ,fields){
+            if(error){
+                res.send(JSON.stringify(error));
+                throw error;
+            }
+            res.send(JSON.stringify(results));
+        })
+        connection.release();
+    })
 
-    console.log(startdate +' to '+enddate);
+})
+
+router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,res, next){
+    var startdate = req.params.startdate;
+    startdate = startdate.substring(0,4)+'-'+startdate.substring(4,6)+'-'+startdate.substring(6,8);
+    var enddate = req.params.enddate;
+    enddate = enddate.substring(0,4)+'-'+enddate.substring(4,6)+'-'+enddate.substring(6,8);
+    var site = req.params.site;
+
+    console.group('Report of monthly transaction :');
+    console.log('Date : '+startdate +' to '+enddate);
+    console.groupEnd();
     mysqldb((err,connection) => {
         connection.query('SELECT ord.id ,ord.storeID,st.siteName,case when cancelTime > 0 then 0 else 1 end as status \n' +
             ',ord.orderName,ord.tranDate,ord.cookingFinishTime,ord.pickupFinishTime \n' +

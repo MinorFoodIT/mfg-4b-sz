@@ -29,6 +29,7 @@ router.get('/v1/sites', function(req ,res, next){
 
 })
 
+//AdminReport function
 router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res, next){
     var startdate = req.params.startdate;
     startdate = startdate.substring(0,4)+'-'+startdate.substring(4,6)+'-'+startdate.substring(6,8);
@@ -89,6 +90,7 @@ router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,r
 
 })
 
+//User functions
 router.post('/v1/login', function(req, res, next) {
     var username = req.body.username
     var password = req.body.password
@@ -107,7 +109,7 @@ router.post('/v1/login', function(req, res, next) {
     });
 });
 
-//post
+//post data from store
 router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
 
     try{
@@ -229,7 +231,7 @@ router.post('/v1/store/order/1112delivery/:brand',function(req, res ,next) {
 
 })
 
-//put
+//put update from store
 router.put('/v1/store/order/1112delivery/statusupdate',function(req, res ,next) {
     try {
         var jsonrequest = req.body;
@@ -265,8 +267,9 @@ router.get('/v1/store/orders/1112delivery/:brand/:store',function(req, res ,next
     var brand = req.params.brand.toUpperCase();
     var store = req.params.store.toUpperCase();
 
+    var dob = moment().format('YYYY-MM-DD');
     mysqldb((err,connection) => {
-        connection.query('SELECT * FROM orders WHERE site= ? and storeID= ? order by createdDate',[brand,store],function (error, results ,fields){
+        connection.query('SELECT * FROM orders WHERE site= ? and storeID= ? and DATE_FORMAT(FROM_UNIXTIME(tranDate), \'%Y-%m-%d\')= ? order by createdDate',[brand,store,dob],function (error, results ,fields){
             if(error){
                 res.send(JSON.stringify(error));
                 throw error;

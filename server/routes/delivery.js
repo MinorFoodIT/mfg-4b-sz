@@ -269,9 +269,9 @@ router.get('/v1/store/orders/1112delivery/:brand/:store',function(req, res ,next
 
     var dob = moment().format('YYYY-MM-DD');
     console.log('query date = '+dob);
-    console.log('SELECT * FROM orders WHERE site= '+brand+' and storeID= '+store+' and DATE_FORMAT(FROM_UNIXTIME(tranDate), \'%Y-%m-%d\')= '+dob+' order by createdDate');
+    console.log('SELECT * FROM orders WHERE site= '+brand+' and storeID= '+store+' and DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(tranDate)), \'%Y-%m-%d\')= '+dob+' order by createdDate');
     mysqldb((err,connection) => {
-        connection.query('SELECT * FROM orders WHERE site= ? and storeID= ? and DATE_FORMAT(FROM_UNIXTIME(tranDate), \'%Y-%m-%d\')= ? order by createdDate',[brand,store,dob],function (error, results ,fields){
+        connection.query('SELECT * FROM orders WHERE site= ? and storeID= ? and DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(tranDate)), \'%Y-%m-%d\')= ? order by createdDate',[brand,store,dob],function (error, results ,fields){
             if(error){
                 res.send(JSON.stringify(error));
                 throw error;

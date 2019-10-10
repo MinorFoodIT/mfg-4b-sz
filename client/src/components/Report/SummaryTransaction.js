@@ -55,7 +55,7 @@ const SummaryTransaction = (props) => {
     const columnMetaData = [
         {
             title: 'Store ID',
-            field: 'store ID',
+            field: 'storeID',
         },
         {
             title: 'Store Name',
@@ -69,10 +69,16 @@ const SummaryTransaction = (props) => {
                 padding: '1px 1px 1px 1px',
             },
             render: rowData => {  //props => {
-                if(rowData.status === 'Cooking' ){
+                if(rowData.status === '0' ){
                     return (
                         <div>
-                            <Chip label="Cooking" className={classes.chip_cooking}/>
+                            <Chip label="Cancelled" className={classes.chip_cancelled}/>
+                        </div>
+                    );
+                }else if(rowData.status === '1'){
+                    return (
+                        <div>
+                            <Chip label="Successful" className={classes.chip_delivered}/>
                         </div>
                     );
                 }

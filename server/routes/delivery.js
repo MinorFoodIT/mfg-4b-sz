@@ -40,10 +40,10 @@ router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res
     console.log('Date : '+startdate +' to '+enddate);
     console.groupEnd();
     mysqldb((err,connection) => {
-        connection.query('SELECT ord.id ,ord.storeID,st.siteName,case when cancelTime > 0 then 0 else 1 end as status \n' +
+        connection.query('SELECT ord.id ,ord.storeID,st.siteName,case when cancelTime > 0 then \'0\' else \'1\' end as status \n' +
             ',ord.orderName,ord.tranDate as orderTime,FORMAT(ord.cookingFinishTime,0) as cookingFinishTime,FORMAT(ord.pickupFinishTime,0) as pickupFinishTime\n' +
-            ',FORMAT(TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime),0) as cookingTime \n' +
-            ',FORMAT(TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime),0) as pickupTime \n' +
+            ',TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) as cookingTime \n' +
+            ',TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime) as pickupTime \n' +
             ',ord.grossTotal\n' +
             ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
             ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +

@@ -41,8 +41,9 @@ router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res
     console.groupEnd();
     mysqldb((err,connection) => {
         connection.query('SELECT ord.id ,ord.storeID,st.siteName,case when cancelTime > 0 then 0 else 1 end as status \n' +
-            ',ord.orderName,ord.tranDate,ord.cookingFinishTime,ord.pickupFinishTime \n' +
-            ',TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) as cookingTime,TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime) as pickupTime \n' +
+            ',ord.orderName,ord.tranDate,FORMAT(ord.cookingFinishTime,0),FORMAT(ord.pickupFinishTime,0) \n' +
+            ',FORMAT(TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime),0) as cookingTime \n' +
+            ',FORMAT(TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime),0) as pickupTime \n' +
             ',ord.grossTotal\n' +
             ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
             ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
@@ -80,10 +81,10 @@ router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,r
     console.groupEnd();
     mysqldb((err,connection) => {
         connection.query('SELECT st.siteName ,count(ord.id) as totalOrder ,sum(ord.grossTotal) as totalSale \n' +
-            ',sum(TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime))/count(ord.id) as avgCooking \n' +
-            ',sum(TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime))/count(ord.id) as avgPickup \n' +
-            ',sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end) as aboveCooking \n' +
-            ',(sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end)/count(ord.id))*100 as aboveCookingPercent \n' +
+            ',FORMAT(sum(TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime))/count(ord.id),0) as avgCooking \n' +
+            ',FORMAT(sum(TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime))/count(ord.id),0) as avgPickup \n' +
+            ',FORMAT(sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end),0) as aboveCooking \n' +
+            ',FORMAT((sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end)/count(ord.id))*100 ,0) as aboveCookingPercent \n' +
             ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
             ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
             ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +

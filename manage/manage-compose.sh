@@ -39,7 +39,7 @@ db-table-setup() {
 
 db-backup() {
     # Backup
-    docker exec mfg-4b-sz_db_1 /usr/bin/mysqldump -u root --password=root storeasservice > backup.sql
+    docker exec mfg-4b-sz_db /usr/bin/mysqldump -u root --password=root storeasservice > backup.sql
 }
 
 db-restore() {

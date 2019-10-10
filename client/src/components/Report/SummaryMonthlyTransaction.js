@@ -62,6 +62,7 @@ const SummaryMonthlyTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'Total Sales',
@@ -76,6 +77,7 @@ const SummaryMonthlyTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'Average time to pickup (min)',
@@ -83,6 +85,7 @@ const SummaryMonthlyTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'No. of order with cooking time > 15 mins',
@@ -90,6 +93,7 @@ const SummaryMonthlyTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: '% of order with cooking time > 15 mins',
@@ -97,6 +101,7 @@ const SummaryMonthlyTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
     ];

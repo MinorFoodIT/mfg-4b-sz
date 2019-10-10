@@ -87,6 +87,7 @@ const SummaryTransaction = (props) => {
             type: 'datetime',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'Cooking Time' ,
@@ -94,6 +95,7 @@ const SummaryTransaction = (props) => {
             type: 'datetime',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'Pickup Time' ,
@@ -108,6 +110,7 @@ const SummaryTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'Pickuped time (mins)',
@@ -115,6 +118,7 @@ const SummaryTransaction = (props) => {
             type: 'numeric',
             cellStyle: {
                 padding: '1px 1px 1px 1px',
+                textAlign: 'center',
             }
         },
         { title: 'Gross Total',
@@ -157,6 +161,9 @@ const SummaryTransaction = (props) => {
         const result = await axios.get(get_url);
         console.group('API :');
         console.log(result.data);
+        if(result.data ==='undefined' || result.data.length < 1){
+            alert('No data returned to display');
+        }
         setRows(result.data!=='undefined'?result.data:[]);
         console.groupEnd();
 

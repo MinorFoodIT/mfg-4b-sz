@@ -55,6 +55,7 @@ services:
     volumes:
       #- /Users/Macbook/stack/stack1_sz/db/data:/var/lib/mysql
       - /home/minor/stack/volume/stack1_sz/db/data:/var/lib/mysql
+      - ${pwd}/manage/db/config/my.cnf:/etc/mysql/my.cnf
     networks:
       - stack1_backend
   admin:

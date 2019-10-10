@@ -76,7 +76,7 @@ router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,r
         ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
         ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
         ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +
-        '  ');
+        ' group by st.siteName ');
     console.groupEnd();
     mysqldb((err,connection) => {
         connection.query('SELECT st.siteName ,count(ord.id) as totalOrder ,sum(ord.grossTotal) as totalSale \n' +
@@ -87,7 +87,7 @@ router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,r
             ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
             ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
             ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +
-            '  ',function (error, results ,fields){
+            ' group by st.siteName ',function (error, results ,fields){
             if(error){
                 res.send(JSON.stringify(error));
                 throw error;

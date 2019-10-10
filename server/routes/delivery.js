@@ -41,7 +41,8 @@ router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res
     console.groupEnd();
     mysqldb((err,connection) => {
         connection.query('SELECT ord.id ,ord.storeID,st.siteName,case when cancelTime > 0 then \'0\' else \'1\' end as status \n' +
-            ',ord.orderName,ord.tranDate as orderTime,FORMAT(ord.cookingFinishTime,0) as cookingFinishTime,FORMAT(ord.pickupFinishTime,0) as pickupFinishTime\n' +
+            ',ord.orderName,DATE_FORMAT(ord.tranDate,\'%Y-%m-%d %H:%i\') as orderTime \n' +
+            ',ord.cookingFinishTime as cookingFinishTime,ord.pickupFinishTime as pickupFinishTime\n' +
             ',TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) as cookingTime \n' +
             ',TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime) as pickupTime \n' +
             ',ord.grossTotal\n' +

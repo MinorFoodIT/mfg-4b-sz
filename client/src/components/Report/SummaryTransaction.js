@@ -157,12 +157,15 @@ const SummaryTransaction = (props) => {
     },[])
 
     const searchReport = useCallback( async(site,selectedStartDate,selectedEndDate) => {
+        if(site === '' ){
+            alert('Please select site.');
+        }
         let get_url = '/api/v1/report_transaction/'+selectedStartDate+'/'+selectedEndDate+'/'+site;
         const result = await axios.get(get_url);
         console.group('API :');
         console.log(result.data);
         if(result.data ==='undefined' || result.data.length < 1){
-            alert('No data returned to display');
+            alert('No data returned to display.');
         }
         setRows(result.data!=='undefined'?result.data:[]);
         console.groupEnd();

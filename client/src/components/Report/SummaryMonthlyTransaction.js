@@ -127,9 +127,11 @@ const SummaryMonthlyTransaction = (props) => {
         const result = await axios.get(get_url);
         console.group('API :');
         console.log(result.data);
+        if(result.data ==='undefined' || result.data.length < 1){
+            alert('No data returned to display.');
+        }
         setRows(result.data!=='undefined'?result.data:[]);
         console.groupEnd();
-
     },[]);
 
     return (

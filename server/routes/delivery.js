@@ -68,6 +68,15 @@ router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,r
 
     console.group('Report of monthly transaction :');
     console.log('Date : '+startdate +' to '+enddate);
+    console.log('Query : '+'SELECT st.siteName ,count(ord.id) as totalOrder ,sum(ord.grossTotal) as totalSale \n' +
+        ',sum(TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime))/count(ord.id) as avgCooking \n' +
+        ',sum(TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime))/count(ord.id) as avgPickup \n' +
+        ',sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end) as aboveCooking \n' +
+        ',(sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end)/count(ord.id))*100 as aboveCookingPercent \n' +
+        ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
+        ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
+        ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +
+        '  ');
     console.groupEnd();
     mysqldb((err,connection) => {
         connection.query('SELECT st.siteName ,count(ord.id) as totalOrder ,sum(ord.grossTotal) as totalSale \n' +

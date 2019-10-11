@@ -20,8 +20,8 @@ start() {
 }
 
 db-table-setup() {
-    echo "timezone"
-    cat db/timezone.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root
+    #echo "timezone"
+    #cat db/timezone.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root
 
     echo "create tables"
     cat db/create-tables.sql | docker exec -i mfg-4b-sz_db /usr/bin/mysql -u root --password=root storeasservice

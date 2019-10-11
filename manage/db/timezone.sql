@@ -1,1 +1,1 @@
-SET GLOBAL time_zone = '+07:00'
+SET GLOBAL time_zone = 'Asia/Bangkok'

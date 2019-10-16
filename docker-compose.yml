@@ -55,8 +55,9 @@ services:
       MYSQL_ROOT_PASSWORD: 'root'
     volumes:
       #- /Users/Macbook/stack/stack1_sz/db/data:/var/lib/mysql
-      - /home/minor/stack/volume/stack1_sz/db/data:/var/lib/mysql
+      #- /home/minor/stack/volume/stack1_sz/db/data:/var/lib/mysql
       #- ./manage/db/config/my.cnf:/etc/mysql/my.cnf
+      - /home/docker/stack/volume/stack1_sz/db/data:/var/lib/mysql
     networks:
       - stack1_backend
   admin:

@@ -8,7 +8,7 @@ WORKDIR /home/node/app
 ARG DB_HOST
 ENV DB_HOST=${DB_HOST}
 
-USER node
+USER root
 COPY package*.json ./
 RUN npm install
 

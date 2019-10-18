@@ -9,7 +9,7 @@ ARG DB_HOST
 ENV DB_HOST=${DB_HOST}
 
 USER root
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 
 #check file .dockerignore

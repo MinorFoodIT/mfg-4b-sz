@@ -48,8 +48,8 @@ router.get('/v1/report_transaction/:startdate/:enddate/:site', function(req ,res
             ',TIMESTAMPDIFF(MINUTE, ord.cookingFinishTime, ord.pickupFinishTime) as pickupTime \n' +
             ',ord.grossTotal\n' +
             ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
-            ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
-            ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +
+            ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime is null)) \n' +
+            ' and ord.tranDate between TIMESTAMP(\''+startdate+' 00:00:00\')  and TIMESTAMP(\''+enddate+' 23:59:59\') \n' +
             ' and ord.storeID = \''+site+'\' ',function (error, results ,fields){
             if(error){
                 res.send(JSON.stringify(error));
@@ -88,8 +88,8 @@ router.get('/v1/report_monthly_transaction/:startdate/:enddate', function(req ,r
             ',FORMAT(sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end),0) as aboveCooking \n' +
             ',FORMAT((sum(case when TIMESTAMPDIFF(MINUTE, ord.tranDate, ord.cookingFinishTime) > 15 then 1 else 0 end)/count(ord.id))*100 ,0) as aboveCookingPercent \n' +
             ' FROM storeasservice.orders ord inner join storeasservice.Sites st on ord.storeID = st.siteNumber\n' +
-            ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime)) \n' +
-            ' and ord.tranDate between TIMESTAMP(\''+startdate+'\')  and TIMESTAMP(\''+enddate+'\') \n' +
+            ' where ((ord.cookingFinishTime > 0 and ord.pickupFinishTime > 0) or (ord.cancelTime is null)) \n' +
+            ' and ord.tranDate between TIMESTAMP(\''+startdate+' 00:00:00\')  and TIMESTAMP(\''+enddate+' 23:59:59\') \n' +
             ' group by st.siteName ',function (error, results ,fields){
             if(error){
                 res.send(JSON.stringify(error));

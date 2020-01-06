@@ -146,7 +146,7 @@ const SummaryMonthlyTransaction = (props) => {
                     pageSize: 10,
                     search: false,
                     showTitle: true,
-
+                    exportButton: true
                 }}
 
             />
